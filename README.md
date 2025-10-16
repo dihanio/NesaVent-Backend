@@ -1,6 +1,54 @@
-# Nesavent Backend API
+# NesaVent Backend API
 
-Complete production-ready backend for Nesavent - Campus Event Management Platform
+[![Node.js](https://img.shields.io/badge/Node.js-22.x-green.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-8.x-green.svg)](https://www.mongodb.com/)
+[![Redis](https://img.shields.io/badge/Redis-7.x-red.svg)](https://redis.io/)
+[![Express](https://img.shields.io/badge/Express-4.x-lightgrey.svg)](https://expressjs.com/)
+
+Complete production-ready RESTful API backend for **NesaVent** - Modern Campus Event Management & Ticketing Platform. Built with TypeScript, Express.js, MongoDB, and Redis for high performance and scalability.
+
+## 📖 Table of Contents
+
+- [Tech Stack](#-tech-stack)
+- [Quick Start](#-quick-start)
+- [Project Structure](#-project-structure)
+- [Environment Variables](#-environment-variables)
+- [API Documentation](#-api-documentation)
+- [Key Features](#-key-features)
+- [Security Features](#-security-features)
+- [Database Models](#-database-models)
+- [Testing](#-testing)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+
+## 🛠️ Tech Stack
+
+**Core Technologies:**
+- **Runtime**: Node.js 22.x
+- **Language**: TypeScript 5.x
+- **Framework**: Express.js 4.x
+- **Database**: MongoDB 8.x with Mongoose ODM
+- **Cache**: Redis 7.x for session & data caching
+
+**Key Libraries & Services:**
+- **Authentication**: JWT (jsonwebtoken), bcrypt
+- **Validation**: Zod schemas
+- **Email**: Resend API
+- **Payment**: Midtrans Snap API
+- **File Upload**: Cloudinary
+- **PDF Generation**: PDFKit
+- **QR Code**: qrcode library with AES-256 encryption
+- **Logging**: Winston + Morgan
+- **Error Tracking**: Sentry
+- **Job Scheduling**: node-cron
+- **Security**: Helmet, express-rate-limit, cors
+- **Process Manager**: PM2 (production)
+
+**Development Tools:**
+- **Package Manager**: npm/pnpm
+- **Code Quality**: ESLint, Prettier
+- **API Testing**: Postman/Insomnia recommended
 
 ## 🚀 Quick Start
 
@@ -302,30 +350,118 @@ Authorization: Bearer {accessToken}
 - Revenue tracking
 - Demographics data
 
-## 🎯 Key Features Implemented
+## ✨ Key Features
 
-### Phase 1 - Core Features ✅
-- [x] User authentication & authorization
-- [x] Email verification
-- [x] Event CRUD operations
-- [x] Registration system
-- [x] Payment gateway integration (Midtrans)
-- [x] E-ticket generation (QR code + PDF)
-- [x] Admin approval workflow
-- [x] Email notifications
-- [x] File upload (Cloudinary)
-- [x] Caching with Redis
-- [x] Rate limiting
-- [x] Error handling & logging
+### 🔐 Authentication & Authorization
+- JWT-based authentication (access + refresh tokens)
+- Role-based access control (Admin, Organization, Student, User)
+- Email verification system with token expiry
+- Password reset via email
+- Session management with Redis
+- Organization verification workflow
+- Rate limiting per user/IP
 
-### Phase 2 - Enhancements (In Progress)
-- [ ] WhatsApp notifications
-- [ ] Check-in system (QR scanner)
-- [ ] Review & rating system
-- [ ] Analytics dashboard
-- [ ] Advanced search & filters
-- [ ] Certificate generation
-- [ ] Event recommendations
+### 🎪 Event Management
+- Complete CRUD operations for events
+- Multi-ticket type support (paid/free)
+- Event approval workflow (Draft → Pending → Approved → Published)
+- Event status management (Published, Cancelled, Completed)
+- Advanced search & filtering (category, city, date, price, venue type)
+- Event statistics (views, shares, registrations, revenue)
+- Featured events system
+- Multiple venue types (Offline, Online, Hybrid)
+- Rich event details (gallery, FAQ, requirements, terms)
+- Automatic slug generation
+
+### 🎟️ Registration & Ticketing
+- Multi-ticket type booking
+- Real-time quota management
+- Payment integration with Midtrans
+- Automatic payment verification
+- QR code generation for tickets
+- E-ticket PDF generation
+- Ticket download functionality
+- Check-in system with QR scanning
+- Registration status tracking
+- Payment expiry handling (30 minutes)
+
+### 💳 Payment Gateway
+- Midtrans integration (Snap API)
+- Multiple payment channels support
+- Automatic payment verification webhook
+- Payment status tracking
+- Revenue analytics
+- Refund handling (for cancelled events)
+
+### 📧 Notification System
+- Email notifications via Resend API
+- Registration confirmation emails
+- Payment success notifications
+- Event reminder emails (automated job)
+- Admin approval notifications
+- Event cancellation notifications
+- Ticket delivery via email
+
+### 💬 Review & Rating
+- User reviews for completed events
+- Star rating system (1-5)
+- Organizer response system
+- Review moderation
+- Review statistics calculation
+
+### 📊 Analytics & Reporting
+- Daily analytics aggregation (cron job)
+- Event performance metrics
+- Revenue tracking
+- User demographics
+- Registration trends
+- Popular events tracking
+- Category statistics
+
+### 🗂️ Category Management
+- Dynamic category system
+- Category-based filtering
+- Category statistics
+- Icon support for categories
+
+### 🔔 Real-time Notifications
+- In-app notification system
+- Notification preferences
+- Mark as read/unread
+- Notification history
+
+### 📁 File Management
+- Cloudinary integration for image uploads
+- Image optimization
+- Multiple file upload support
+- Event poster & gallery management
+
+### 🛡️ Security Features
+- Input validation with Zod schemas
+- XSS protection
+- SQL/NoSQL injection prevention
+- CORS configuration
+- Helmet security headers
+- Encrypted QR codes (AES-256)
+- Rate limiting (Express Rate Limit)
+- Request sanitization
+- Error handling middleware
+- Winston logger integration
+- Sentry error tracking
+
+### ⚡ Performance Optimization
+- Redis caching for frequently accessed data
+- Database query optimization
+- Pagination support
+- Index optimization for search queries
+- Connection pooling
+- Response compression
+
+### 🤖 Automated Jobs
+- **Payment Job**: Check expired payments every 5 minutes
+- **Reminder Job**: Send event reminders (1 day before)
+- **Analytics Job**: Aggregate daily statistics
+- **Maintenance Job**: Clean up expired sessions/tokens
 
 ## 🧪 Testing
 
@@ -342,21 +478,115 @@ npm run test:coverage
 
 ## 🚀 Deployment
 
-### Using Docker
+### Environment-Specific Configurations
 
+**Development:**
 ```bash
-# Build image
-docker build -t nesavent-backend .
-
-# Run container
-docker run -p 5000:5000 --env-file .env nesavent-backend
+npm run dev
+# Server runs on http://localhost:5000
+# Hot reload enabled with nodemon
 ```
 
-### Using Railway/Render
+**Production:**
+```bash
+npm run build
+npm start
+# Or use PM2 for process management
+pm2 start dist/server.js --name nesavent-api
+```
 
-1. Connect your repository
-2. Set environment variables
-3. Deploy automatically on push
+### Using Docker
+
+1. **Build Docker Image:**
+```bash
+docker build -t nesavent-backend:latest .
+```
+
+2. **Run Container:**
+```bash
+docker run -d \
+  --name nesavent-api \
+  -p 5000:5000 \
+  --env-file .env \
+  --restart unless-stopped \
+  nesavent-backend:latest
+```
+
+3. **With Docker Compose:**
+```yaml
+version: '3.8'
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+  
+  mongodb:
+    image: mongo:8.0
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+  
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongodb_data:
+```
+
+### Cloud Deployment
+
+#### Railway
+1. Connect GitHub repository
+2. Create new project from repo
+3. Add environment variables in dashboard
+4. Deploy automatically on push to main branch
+
+#### Render
+1. New Web Service → Connect repository
+2. Build Command: `npm install && npm run build`
+3. Start Command: `npm start`
+4. Add environment variables
+5. Auto-deploy enabled by default
+
+#### VPS/Dedicated Server
+1. Install Node.js 22.x, MongoDB 8.x, Redis 7.x
+2. Clone repository
+3. Install dependencies: `npm install`
+4. Build: `npm run build`
+5. Setup PM2:
+```bash
+pm2 start dist/server.js --name nesavent-api
+pm2 startup
+pm2 save
+```
+6. Configure Nginx reverse proxy
+7. Setup SSL with Let's Encrypt
+
+### Environment Variables Checklist
+
+Before deploying, ensure these variables are set:
+- [x] `NODE_ENV=production`
+- [x] `PORT=5000`
+- [x] `MONGODB_URI` (MongoDB connection string)
+- [x] `REDIS_URL` (Redis connection string)
+- [x] `JWT_ACCESS_SECRET` (Strong random string)
+- [x] `JWT_REFRESH_SECRET` (Strong random string)
+- [x] `ENCRYPTION_KEY` (32-character string for QR encryption)
+- [x] `RESEND_API_KEY` (Email service)
+- [x] `CLOUDINARY_*` (Image upload service)
+- [x] `MIDTRANS_*` (Payment gateway)
+- [x] `FRONTEND_URL` (CORS configuration)
+- [x] `SENTRY_DSN` (Error tracking - optional)
 
 ## 📝 API Response Format
 
@@ -389,30 +619,134 @@ docker run -p 5000:5000 --env-file .env nesavent-backend
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+We welcome contributions! Please follow these guidelines:
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/AmazingFeature`
+3. **Commit your changes**: `git commit -m 'Add some AmazingFeature'`
+4. **Push to the branch**: `git push origin feature/AmazingFeature`
+5. **Open a Pull Request**
+
+### Code Style
+- Follow TypeScript best practices
+- Use ESLint and Prettier configurations
+- Write meaningful commit messages
+- Add comments for complex logic
+- Update documentation when needed
+
+### Pull Request Guidelines
+- Describe changes in detail
+- Reference related issues
+- Add screenshots for UI changes
+- Ensure tests pass
+- Update README if needed
 
 ## 📄 License
 
-MIT License - see LICENSE file for details
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-## 👥 Support
+## 🐛 Bug Reports & Feature Requests
 
-For support, email support@nesavent.com or create an issue on GitHub.
+Found a bug or have a feature request? Please create an issue on GitHub:
+
+**Bug Report Template:**
+- Description of the bug
+- Steps to reproduce
+- Expected vs actual behavior
+- Environment details (OS, Node version, etc.)
+- Screenshots if applicable
+
+**Feature Request Template:**
+- Feature description
+- Use case / problem it solves
+- Proposed implementation (optional)
+- Additional context
+
+## 👥 Support & Community
+
+- **GitHub Issues**: [Report bugs or request features](https://github.com/dihanio/NesaVent-Backend/issues)
+- **Documentation**: See API documentation above
+- **Email**: support@nesavent.com (if available)
 
 ## 🔄 Changelog
 
-### Version 1.0.0 (Current)
-- Initial release with core features
-- Full authentication system
-- Event management
-- Registration & ticketing
-- Payment integration
-- Email notifications
+### Version 1.0.0 (January 2025)
+**Initial Release - Core Features**
+- ✅ Complete authentication system with JWT
+- ✅ Role-based access control (Admin, Organization, Student, User)
+- ✅ Email verification workflow
+- ✅ Event management (CRUD + approval workflow)
+- ✅ Multi-ticket type system
+- ✅ Registration & booking system
+- ✅ Payment gateway integration (Midtrans)
+- ✅ QR code generation for tickets
+- ✅ E-ticket PDF generation
+- ✅ Email notification system (Resend)
+- ✅ File upload with Cloudinary
+- ✅ Redis caching implementation
+- ✅ Rate limiting & security features
+- ✅ Admin dashboard APIs
+- ✅ Analytics & reporting
+- ✅ Review & rating system
+- ✅ Check-in system
+- ✅ Category management
+- ✅ Automated cron jobs
+- ✅ Comprehensive logging & error tracking
+
+## 🗺️ Roadmap
+
+### Version 1.1.0 (Q1 2025)
+- [ ] WhatsApp notification integration
+- [ ] Advanced analytics dashboard
+- [ ] Event recommendations engine
+- [ ] Export reports (Excel/PDF)
+- [ ] Bulk ticket operations
+- [ ] Multi-language support (i18n)
+
+### Version 1.2.0 (Q2 2025)
+- [ ] Certificate generation system
+- [ ] Live streaming integration
+- [ ] Event collaboration features
+- [ ] Advanced search with Elasticsearch
+- [ ] Social media integration
+- [ ] Mobile app API enhancements
+
+### Version 2.0.0 (Future)
+- [ ] GraphQL API support
+- [ ] Microservices architecture
+- [ ] Real-time collaboration
+- [ ] AI-powered features
+- [ ] Advanced security features
+- [ ] Performance optimization
+
+## 📊 Project Statistics
+
+- **Total Files**: 62+
+- **Total Lines**: 24,000+
+- **API Endpoints**: 50+
+- **Database Models**: 8
+- **Services**: 10+
+- **Automated Jobs**: 4
+- **Languages**: TypeScript (100%)
+
+## 🙏 Acknowledgments
+
+- **Express.js** - Fast, unopinionated web framework
+- **MongoDB** - Flexible document database
+- **Redis** - In-memory data structure store
+- **Midtrans** - Payment gateway solution
+- **Resend** - Modern email API
+- **Cloudinary** - Image & video management
+- All open-source contributors
+
+## 📞 Contact
+
+- **GitHub**: [@dihanio](https://github.com/dihanio)
+- **Repository**: [NesaVent-Backend](https://github.com/dihanio/NesaVent-Backend)
+- **Frontend Repository**: [NesaVent-Frontend](https://github.com/dihanio/NesaVent-Frontend)
 
 ---
 
-**Built with ❤️ by Nesavent Team**
+**⭐ If you find this project useful, please consider giving it a star!**
+
+**Built with ❤️ by NesaVent Team**
